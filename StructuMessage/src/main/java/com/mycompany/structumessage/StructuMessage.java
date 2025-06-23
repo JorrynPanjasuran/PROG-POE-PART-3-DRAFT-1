@@ -1,5 +1,6 @@
 package com.mycompany.structumessage;
 
+import java.util.List;
 import javax.swing.*;
 
 public class StructuMessage {
@@ -241,6 +242,18 @@ public class StructuMessage {
             JOptionPane.showMessageDialog(null, "Invalid password format.");
         }
     }
+    
+    public static void loadStoredMessagesFromJson() {
+    List<Message> loadedList = Message.loadMessagesFromJson();
+    if (loadedList != null) {
+        for (Message msg : loadedList) {
+            if (msg != null && storeCount < storedMessages.length) {
+                storedMessages[storeCount++] = msg;
+            }
+        }
+    }
+}
+
 
     public static String getValidCellphone() {
         String phone;

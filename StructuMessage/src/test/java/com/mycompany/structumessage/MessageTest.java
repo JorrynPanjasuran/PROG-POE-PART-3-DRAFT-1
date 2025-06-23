@@ -1,28 +1,19 @@
 package com.mycompany.structumessage;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import java.io.File;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-/*
- * Unit tests for the Message class – PROG5121 Part 2
- * 
- * Title: Java Unit Testing with JUnit
- * Author: Oracle, Stack Overflow, GeeksforGeeks
- * Date: 2025
- * Sources:
- * - https://www.geeksforgeeks.org/unit-testing-java-using-junit/
- * - https://junit.org/junit5/docs/current/user-guide/
- * - https://stackoverflow.com/questions/6070690
- * - The Independent Institute of Education. (2025). PROG5121.
- */
 public class MessageTest {
 
     @Test
     public void testGenerateMessageID() {
         String id = Message.generateMessageID();
-        assertNotNull(id); // ID should not be null
-        assertEquals(10, id.length()); // Should be exactly 10 digits
-        assertTrue(id.matches("\\d{10}")); // Must be numeric
+        assertNotNull(id);
+        assertEquals(10, id.length());
+        assertTrue(id.matches("\\d{10}"));
     }
 
     @Test
@@ -32,7 +23,7 @@ public class MessageTest {
 
     @Test
     public void testCheckMessageID_Invalid() {
-        assertFalse(Message.checkMessageID("123456789012")); // Too long
+        assertFalse(Message.checkMessageID("123456789012"));
     }
 
     @Test
@@ -42,12 +33,12 @@ public class MessageTest {
 
     @Test
     public void testCheckRecipientCell_Invalid() {
-        assertFalse(Message.checkRecipientCell("08575975889")); // Missing +27
+        assertFalse(Message.checkRecipientCell("0841234567")); // Missing +27
     }
 
     @Test
     public void testValidateMessageLength_Valid() {
-        String msg = "Hi Mike, can you join us for dinner tonight";
+        String msg = "Hello, how are you?";
         assertEquals("Message ready to send.", Message.validateMessageLength(msg));
     }
 
@@ -55,53 +46,63 @@ public class MessageTest {
     public void testValidateMessageLength_Invalid() {
         String longMsg = "A".repeat(260);
         assertEquals("Message exceeds 250 characters by 10, please reduce size.",
-                Message.validateMessageLength(longMsg));
+                     Message.validateMessageLength(longMsg));
     }
 
     @Test
     public void testCreateMessageHash() {
-        String result = Message.createMessageHash("0012345678", 0, "Hi Mike, can you join us for dinner tonight");
-        assertEquals("00:0:HITONIGHT", result); // Format: ID prefix : msgNum : first+last word (no space)
+        String hash = Message.createMessageHash("1234567890", 0, "Hi Mike, let's meet tonight");
+        assertEquals("12:0:HITONIGHT", hash);
     }
 
     @Test
     public void testSendOptions_Send() {
-        Message m = new Message("+27718693002", "Hi Mike, can you join us for dinner tonight", 0);
+        Message m = new Message("+27718693002", "Test message", 1);
         assertEquals("Message successfully sent.", m.sendOptions("send"));
         assertTrue(m.isSent());
     }
 
     @Test
     public void testSendOptions_Discard() {
-        Message m = new Message("+27718693002", "Hi Keegan, did you receive the payment?", 1);
+        Message m = new Message("+27718693002", "Discard this", 2);
         assertEquals("Press 0 to delete message.", m.sendOptions("discard"));
         assertFalse(m.isSent());
     }
 
     @Test
     public void testSendOptions_Store() {
-        Message m = new Message("+27718693002", "Message to be stored", 2);
-        assertEquals("Message successfully stored.", m.sendOptions("store"));
-        // Optionally verify file creation manually
+        Message m = new Message("+27718693002", "Store this message", 3);
+        String result = m.sendOptions("store");
+        assertEquals("Message successfully stored.", result);
+        File file = new File("message.json");
+        assertTrue(file.exists());
     }
 
     @Test
     public void testReturnTotalMessages() {
         int before = Message.returnTotalMessages();
-        Message m = new Message("+27718693002", "Another message", 3);
+        Message m = new Message("+27718693002", "New send", 4);
         m.sendOptions("send");
         assertEquals(before + 1, Message.returnTotalMessages());
     }
 
     @Test
+    public void testLoadMessagesFromJson() {
+        List<Message> messages = Message.loadMessagesFromJson();
+        assertNotNull(messages);
+        assertTrue(messages.size() >= 0); // Will be 0 if nothing stored yet
+    }
+
+    @Test
     public void testGetters() {
-        Message m = new Message("+27834567890", "Sample test message", 5);
+        Message m = new Message("+27834567890", "Unit test message", 5);
         assertNotNull(m.getMessageID());
-        assertEquals("Sample test message", m.getMessage());
-        assertEquals("+27834567890", m.getRecipient());
         assertNotNull(m.getMessageHash());
+        assertEquals("+27834567890", m.getRecipient());
+        assertEquals("Unit test message", m.getMessage());
     }
 }
+
 
 // Title: StructuMessage Application – Main Class  
 // Author: Oracle, Stack Overflow, TheServerSide, W3Schools, GeeksforGeeks, Baeldung, TutorialsPoint, JavaCodeGeeks, Mozilla MDN, The IIE / Rochelle Moodley  

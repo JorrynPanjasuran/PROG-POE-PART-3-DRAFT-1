@@ -1,23 +1,18 @@
 package com.mycompany.structumessage;
 
-import javax.swing.JOptionPane;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Random;
+import java.io.*;
+import java.util.*;
 
 public class Message {
 
-    // Private fields to store message details
-    private String messageID;     // Unique message ID
-    private String recipient;     // Phone number of recipient
-    private String message;       // Message content
-    private String messageHash;   // Unique hash used for verifying message
-    private boolean isSent;       // Boolean to track if message was sent
+    private String messageID;
+    private String recipient;
+    private String message;
+    private String messageHash;
+    private boolean isSent;
 
-    // Static field to keep track of total messages sent
     private static int totalMessages = 0;
 
-    // Constructor to initialize a new Message object with provided details
     public Message(String recipient, String message, int messageNumber) {
         this.messageID = generateMessageID();
         this.recipient = recipient;
@@ -26,57 +21,34 @@ public class Message {
         this.isSent = false;
     }
 
-    // Method to generate a unique 10-digit message ID
     public static String generateMessageID() {
         Random rand = new Random();
-        String id = "";
-        for (int i = 0; i < 10; i++) {
-            id += rand.nextInt(10); // generates a single digit and appends to ID
-        }
-        return id;
+        StringBuilder id = new StringBuilder();
+        for (int i = 0; i < 10; i++) id.append(rand.nextInt(10));
+        return id.toString();
     }
 
-    // Method to check if the message ID is valid (not null and up to 10 characters)
     public static boolean checkMessageID(String id) {
         return id != null && id.length() <= 10;
     }
 
-    // Method to validate the recipient's cellphone number
-    // Criteria: Starts with '+' and length between 11 and 13 characters
     public static boolean checkRecipientCell(String number) {
-        return number.startsWith("+") && number.length() <= 13 && number.length() >= 11;
+        return number.startsWith("+") && number.length() >= 11 && number.length() <= 13;
     }
 
-    // Method to validate the length of the message
     public static String validateMessageLength(String msg) {
-        if (msg.length() <= 250) {
-            return "Message ready to send.";
-        } else {
-            int extra = msg.length() - 250;
-            return "Message exceeds 250 characters by " + extra + ", please reduce size.";
-        }
+        return (msg.length() <= 250)
+                ? "Message ready to send."
+                : "Message exceeds 250 characters by " + (msg.length() - 250) + ", please reduce size.";
     }
 
-    // Method to create a unique message hash based on message ID, message number, and content
     public static String createMessageHash(String id, int msgNum, String msg) {
-        String[] words = msg.trim().split("\\s+"); // Handles multiple spaces safely
-
-        String first = "NA";
-        String last = "NA";
-
-        if (words.length >= 1 && !words[0].isEmpty()) {
-            first = words[0].replaceAll("[^a-zA-Z0-9]", "");
-        }
-
-        if (words.length >= 2 && !words[words.length - 1].isEmpty()) {
-            last = words[words.length - 1].replaceAll("[^a-zA-Z0-9]", "");
-        }
-
-        String partID = id.substring(0, 2);
-        return (partID + ":" + msgNum + ":" + first + last).toUpperCase();
+        String[] words = msg.trim().split("\\s+");
+        String first = words.length > 0 ? words[0].replaceAll("[^a-zA-Z0-9]", "") : "NA";
+        String last = words.length > 1 ? words[words.length - 1].replaceAll("[^a-zA-Z0-9]", "") : "NA";
+        return (id.substring(0, 2) + ":" + msgNum + ":" + first + last).toUpperCase();
     }
 
-    // Method to handle different message actions based on user choice
     public String sendOptions(String choice) {
         switch (choice.toLowerCase()) {
             case "send" -> {
@@ -97,40 +69,64 @@ public class Message {
         }
     }
 
-    // Method to return message details as a formatted string
     public String printDetails() {
-        return "Message ID: " + messageID
-                + "\nMessage Hash: " + messageHash
-                + "\nRecipient: " + recipient
-                + "\nMessage: " + message;
+        return "Message ID: " + messageID +
+                "\nMessage Hash: " + messageHash +
+                "\nRecipient: " + recipient +
+                "\nMessage: " + message;
     }
 
-    // Static method to return the total number of messages sent
     public static int returnTotalMessages() {
         return totalMessages;
     }
 
-    // Method to store the message content into a JSON file
     public void storeMessageToJson() {
-        try {
-            FileWriter file = new FileWriter("message.json", true); // Append mode
-
-            // Manually create JSON string (like the example in your image)
-            String jsonString = "{\n"
-                    + "  \"messageHash\": \"" + messageHash.replace("\"", "\\\"") + "\",\n"
-                    + "  \"recipient\": \"" + recipient.replace("\"", "\\\"") + "\",\n"
-                    + "  \"message\": \"" + message.replace("\"", "\\\"") + "\"\n"
-                    + "}\n";
-
-            file.write(jsonString);
-            file.close();
-            System.out.println("Message saved to message.json");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("message.json", true))) {
+            String jsonBlock = "{"
+                    + "\"messageHash\":\"" + messageHash.replace("\"", "\\\"") + "\","
+                    + "\"recipient\":\"" + recipient.replace("\"", "\\\"") + "\","
+                    + "\"message\":\"" + message.replace("\"", "\\\"") + "\""
+                    + "}";
+            writer.write(jsonBlock);
+            writer.newLine();
         } catch (IOException e) {
             System.out.println("Error saving message.");
         }
     }
 
-    // === GETTER METHODS ===
+    public static List<Message> loadMessagesFromJson() {
+        List<Message> messages = new ArrayList<>();
+        File file = new File("message.json");
+
+        if (!file.exists()) return messages;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // crude manual parsing from line
+                String hash = extractJsonField(line, "messageHash");
+                String recipient = extractJsonField(line, "recipient");
+                String msg = extractJsonField(line, "message");
+
+                Message m = new Message(recipient, msg, messages.size());
+                m.messageHash = hash;
+                messages.add(m);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading stored messages.");
+        }
+        return messages;
+    }
+
+    private static String extractJsonField(String json, String field) {
+        String search = "\"" + field + "\":\"";
+        int start = json.indexOf(search);
+        if (start == -1) return "";
+        start += search.length();
+        int end = json.indexOf("\"", start);
+        return end > start ? json.substring(start, end) : "";
+    }
+
     public String getMessageID() {
         return messageID;
     }
@@ -150,7 +146,8 @@ public class Message {
     public boolean isSent() {
         return isSent;
     }
-} // End of Message class
+}
+
 
 // Title: StructuMessage Application – Main Class  
 // Author: Oracle, Stack Overflow, TheServerSide, W3Schools, GeeksforGeeks, Baeldung, TutorialsPoint, JavaCodeGeeks, Mozilla MDN, The IIE / Rochelle Moodley  
