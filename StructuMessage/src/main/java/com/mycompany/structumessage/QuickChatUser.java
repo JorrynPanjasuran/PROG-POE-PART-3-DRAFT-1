@@ -2,14 +2,12 @@ package com.mycompany.structumessage;
 
 public class QuickChatUser {
 
-    // Private fields to store user information
     private String username;
     private String password;
     private String cellphone;
     private String firstName;
     private String lastName;
 
-    // Constructor to initialize a new QuickChatUser object with provided details
     public QuickChatUser(String username, String password, String cellphone, String firstName, String lastName) {
         this.username = username;
         this.password = password;
@@ -18,53 +16,45 @@ public class QuickChatUser {
         this.lastName = lastName;
     }
 
-    // === Username Check ===
-    // Method to validate the username format using regex
-    // Criteria: Must contain an underscore and be no more than 5 characters long
     public static boolean checkUserName(String username) {
+        if (username == null) return false;
         return username.matches("^(?=.*_).{1,5}$");
     }
 
-    // === Password Complexity Check ===
-    // Method to validate the password complexity using regex
-    // Criteria: At least 8 characters, includes uppercase letter, digit, and special character
     public static boolean checkPasswordComplexity(String password) {
+        if (password == null) return false;
         return password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$");
     }
 
-    // === Cellphone Number Check ===
-    // Method to validate the cellphone number using regex
-    // Criteria: Must start with +27 and be followed by exactly 9 digits
     public static boolean checkCellPhoneNumber(String cellphone) {
+        if (cellphone == null) return false;
         return cellphone.matches("^\\+27\\d{9}$");
     }
 
-    // === Registration Result Message ===
-    // Method to return a message based on the validation of username, password, and cellphone number
     public String register() {
         if (!checkUserName(this.username)) {
-            return "Username is not correctly formatted, please ensure that your username contains an underscore and is no more than five characters in length.";
+            return "Username is not correctly formatted.\n" +
+                   "It must contain an underscore (_) and be no more than five characters long.";
         }
 
         if (!checkPasswordComplexity(this.password)) {
-            return "Password is not correctly formatted; please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.";
+            return "Password is not correctly formatted.\n" +
+                   "It must be at least eight characters long and include:\n" +
+                   "- A capital letter\n- A number\n- A special character";
         }
 
         if (!checkCellPhoneNumber(this.cellphone)) {
-            return "Cell phone number incorrectly formatted or does not contain international code.";
+            return "Cell phone number is not correctly formatted.\n" +
+                   "It must start with +27 and be followed by exactly 9 digits.";
         }
 
         return "Username and password successfully captured.\nCell phone number successfully added.";
     }
 
-    // === Login Authentication ===
-    // Method to authenticate user login by comparing input credentials with stored credentials
     public boolean login(String inputUsername, String inputPassword) {
         return this.username.equals(inputUsername) && this.password.equals(inputPassword);
     }
 
-    // === Login Status Message ===
-    // Method to return a welcome message if login is successful or an error message if not
     public String loginStatusMessage(boolean loginStatus) {
         if (loginStatus) {
             return "Welcome " + firstName + " " + lastName + ", it is great to see you again.";
@@ -73,7 +63,6 @@ public class QuickChatUser {
         }
     }
 
-    // === Getters (optional if needed) ===
     public String getUsername() {
         return username;
     }

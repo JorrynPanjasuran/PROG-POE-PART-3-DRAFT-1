@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mycompany.structumessage.MessageTest" time="0.08" tests="13" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mycompany.structumessage.MessageTest" time="0.097" tests="21" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="ZA"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-23\bin"/>
-    <property name="sun.java.command" value="C:\Users\jorry\AppData\Local\Temp\surefire1415086745664008183\surefirebooter-20250526121124618_3.jar C:\Users\jorry\AppData\Local\Temp\surefire1415086745664008183 2025-05-26T12-11-24_484-jvmRun1 surefire-20250526121124618_1tmp surefire_0-20250526121124618_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\jorry\AppData\Local\Temp\surefire10659997417632129572\surefirebooter-20250625113950670_3.jar C:\Users\jorry\AppData\Local\Temp\surefire10659997417632129572 2025-06-25T11-39-50_538-jvmRun1 surefire-20250625113950670_1tmp surefire_0-20250625113950670_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="com.mycompany.structumessage.MessageTest"/>
     <property name="surefire.test.class.path" value="C:\Users\jorry\Desktop\PROG VIDEOS\StructuMessage\target\test-classes;C:\Users\jorry\Desktop\PROG VIDEOS\StructuMessage\target\classes;C:\Users\jorry\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.3\junit-jupiter-api-5.10.3.jar;C:\Users\jorry\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\jorry\.m2\repository\org\junit\platform\junit-platform-commons\1.10.3\junit-platform-commons-1.10.3.jar;C:\Users\jorry\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\jorry\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.3\junit-jupiter-params-5.10.3.jar;C:\Users\jorry\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.3\junit-jupiter-engine-5.10.3.jar;C:\Users\jorry\.m2\repository\org\junit\platform\junit-platform-engine\1.10.3\junit-platform-engine-1.10.3.jar;"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\jorry\AppData\Local\Temp\surefire1415086745664008183\surefirebooter-20250526121124618_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\jorry\AppData\Local\Temp\surefire10659997417632129572\surefirebooter-20250625113950670_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="23.0.2+7-58"/>
@@ -60,20 +60,25 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
-  <testcase name="testCheckRecipientCell_Valid" classname="com.mycompany.structumessage.MessageTest" time="0.028"/>
-  <testcase name="testSendOptions_Store" classname="com.mycompany.structumessage.MessageTest" time="0.017">
-    <system-out><![CDATA[Message saved to message.json
-]]></system-out>
-  </testcase>
-  <testcase name="testReturnTotalMessages" classname="com.mycompany.structumessage.MessageTest" time="0.002"/>
+  <testcase name="testCheckRecipientCell_Valid" classname="com.mycompany.structumessage.MessageTest" time="0.02"/>
+  <testcase name="testSendOptions_Store" classname="com.mycompany.structumessage.MessageTest" time="0.018"/>
+  <testcase name="testReturnTotalMessages" classname="com.mycompany.structumessage.MessageTest" time="0.001"/>
   <testcase name="testSendOptions_Discard" classname="com.mycompany.structumessage.MessageTest" time="0.001"/>
-  <testcase name="testValidateMessageLength_Invalid" classname="com.mycompany.structumessage.MessageTest" time="0.003"/>
+  <testcase name="testMessageHash_FormatStructure" classname="com.mycompany.structumessage.MessageTest" time="0.003"/>
+  <testcase name="testValidateMessageLength_Invalid" classname="com.mycompany.structumessage.MessageTest" time="0.002"/>
+  <testcase name="testMessageID_IsUnique" classname="com.mycompany.structumessage.MessageTest" time="0.002"/>
   <testcase name="testGenerateMessageID" classname="com.mycompany.structumessage.MessageTest" time="0.001"/>
-  <testcase name="testGetters" classname="com.mycompany.structumessage.MessageTest" time="0.0"/>
+  <testcase name="testGetters" classname="com.mycompany.structumessage.MessageTest" time="0.001"/>
+  <testcase name="testSendOptions_InvalidChoice" classname="com.mycompany.structumessage.MessageTest" time="0.0"/>
   <testcase name="testCheckMessageID_Invalid" classname="com.mycompany.structumessage.MessageTest" time="0.0"/>
-  <testcase name="testCheckRecipientCell_Invalid" classname="com.mycompany.structumessage.MessageTest" time="0.005"/>
-  <testcase name="testCheckMessageID_Valid" classname="com.mycompany.structumessage.MessageTest" time="0.001"/>
+  <testcase name="testLoadMessagesFromJson" classname="com.mycompany.structumessage.MessageTest" time="0.003"/>
+  <testcase name="testCheckRecipientCell_Invalid" classname="com.mycompany.structumessage.MessageTest" time="0.0"/>
+  <testcase name="testCheckMessageID_Valid" classname="com.mycompany.structumessage.MessageTest" time="0.0"/>
+  <testcase name="testMessageConstructor_AssignsCorrectValues" classname="com.mycompany.structumessage.MessageTest" time="0.001"/>
+  <testcase name="testCheckMessageID_EmptyString" classname="com.mycompany.structumessage.MessageTest" time="0.001"/>
+  <testcase name="testStoreMessageToJson_DoesNotThrow" classname="com.mycompany.structumessage.MessageTest" time="0.004"/>
   <testcase name="testSendOptions_Send" classname="com.mycompany.structumessage.MessageTest" time="0.0"/>
-  <testcase name="testValidateMessageLength_Valid" classname="com.mycompany.structumessage.MessageTest" time="0.001"/>
-  <testcase name="testCreateMessageHash" classname="com.mycompany.structumessage.MessageTest" time="0.001"/>
+  <testcase name="testLoadMessagesFromJson_ReturnsList" classname="com.mycompany.structumessage.MessageTest" time="0.002"/>
+  <testcase name="testValidateMessageLength_Valid" classname="com.mycompany.structumessage.MessageTest" time="0.0"/>
+  <testcase name="testCreateMessageHash" classname="com.mycompany.structumessage.MessageTest" time="0.0"/>
 </testsuite>

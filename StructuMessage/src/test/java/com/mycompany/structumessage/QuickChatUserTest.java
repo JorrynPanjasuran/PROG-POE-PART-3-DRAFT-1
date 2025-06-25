@@ -1,16 +1,11 @@
-/*
- * Unit tests for the QuickChatUser class – PROG5121 Part 2
- *
- * Title: How to code a very simple login system with Java
- * Author: Various contributors (Stack Overflow Community)
- * Date: 10 June 2013
- * Available: https://stackoverflow.com/questions/16627910/how-to-code-a-very-simple-login-system-with-java
- */
 package com.mycompany.structumessage;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the QuickChatUser class – PROG5121 Part 3
+ */
 public class QuickChatUserTest {
 
     @Test
@@ -24,6 +19,11 @@ public class QuickChatUserTest {
     }
 
     @Test
+    public void testCheckUserName_Null() {
+        assertFalse(QuickChatUser.checkUserName(null));
+    }
+
+    @Test
     public void testCheckPasswordComplexity_Valid() {
         assertTrue(QuickChatUser.checkPasswordComplexity("Secure@123"));
     }
@@ -34,6 +34,11 @@ public class QuickChatUserTest {
     }
 
     @Test
+    public void testCheckPasswordComplexity_Null() {
+        assertFalse(QuickChatUser.checkPasswordComplexity(null));
+    }
+
+    @Test
     public void testCheckCellPhoneNumber_Valid() {
         assertTrue(QuickChatUser.checkCellPhoneNumber("+27812345678"));
     }
@@ -41,6 +46,11 @@ public class QuickChatUserTest {
     @Test
     public void testCheckCellPhoneNumber_Invalid() {
         assertFalse(QuickChatUser.checkCellPhoneNumber("0812345678"));
+    }
+
+    @Test
+    public void testCheckCellPhoneNumber_Null() {
+        assertFalse(QuickChatUser.checkCellPhoneNumber(null));
     }
 
     @Test

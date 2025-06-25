@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageTest {
 
+    // ───── Existing Unit Tests ─────
+
     @Test
     public void testGenerateMessageID() {
         String id = Message.generateMessageID();
@@ -100,6 +102,57 @@ public class MessageTest {
         assertNotNull(m.getMessageHash());
         assertEquals("+27834567890", m.getRecipient());
         assertEquals("Unit test message", m.getMessage());
+    }
+
+    // ───── NEW UNIT TESTS FOR PART 3 ─────
+
+    @Test
+    public void testMessageID_IsUnique() {
+        String id1 = Message.generateMessageID();
+        String id2 = Message.generateMessageID();
+        assertNotEquals(id1, id2);
+    }
+
+    @Test
+    public void testMessageConstructor_AssignsCorrectValues() {
+        Message m = new Message("+27830000000", "Hello", 1);
+        assertEquals("+27830000000", m.getRecipient());
+        assertEquals("Hello", m.getMessage());
+        assertNotNull(m.getMessageID());
+        assertNotNull(m.getMessageHash());
+    }
+
+    @Test
+    public void testMessageHash_FormatStructure() {
+        Message m = new Message("+2783", "Hello again", 2);
+        String hash = m.getMessageHash();
+        assertTrue(hash.matches("[A-Z0-9]{2}:\\d+:[A-Z0-9]+"));
+    }
+
+    @Test
+    public void testSendOptions_InvalidChoice() {
+        Message m = new Message("+2783", "Hello", 2);
+        String result = m.sendOptions("unknown");
+        assertEquals("Invalid option.", result);
+    }
+
+    @Test
+public void testLoadMessagesFromJson_ReturnsList() {
+    List<Message> messages = Message.loadMessagesFromJson();
+    assertNotNull(messages);
+    assertInstanceOf(List.class, messages);
+}
+
+
+    @Test
+    public void testStoreMessageToJson_DoesNotThrow() {
+        Message m = new Message("+2783", "Test", 0);
+        assertDoesNotThrow(m::storeMessageToJson);
+    }
+
+    @Test
+    public void testCheckMessageID_EmptyString() {
+        assertFalse(Message.checkMessageID(""));
     }
 }
 

@@ -29,8 +29,9 @@ public class Message {
     }
 
     public static boolean checkMessageID(String id) {
-        return id != null && id.length() <= 10;
-    }
+    return id != null && !id.isEmpty() && id.length() <= 10;
+}
+
 
     public static boolean checkRecipientCell(String number) {
         return number.startsWith("+") && number.length() >= 11 && number.length() <= 13;
