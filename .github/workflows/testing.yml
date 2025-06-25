@@ -1,0 +1,27 @@
+name: Run JUnit Tests
+
+# Fire the workflow on every push and on all pull-requests
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣  Get the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2️⃣  Install Temurin 17 and cache the ~/.m2 folder automatically
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven        # built-in Maven dependency cache
+
+      # 3️⃣  Build the project and run all JUnit tests
+      #     Change the cd path if your pom.xml is inside a sub-folder
+      - name: Build & test with Maven
+        run: |
+          mvn -B test
